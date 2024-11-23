@@ -1,0 +1,12 @@
+---
+# tasks file for update_all_pakages
+- name: Update for Debian ubuntu Mint
+  apt:
+    upgrade: full
+    update_cache: yes
+  when:   ansible_os_family == "Debian"
+- name: upgrade all packages RedHat
+  dnf:
+    name: "*"
+    state: latest
+  when:   ansible_os_family == "RedHat"
