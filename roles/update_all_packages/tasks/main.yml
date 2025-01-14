@@ -6,7 +6,18 @@
     update_cache: yes
   when:   ansible_os_family == "Debian"
 - name: upgrade all packages RedHat
-  dnf:
+  yum:
     name: "*"
     state: latest
   when:   ansible_os_family == "RedHat"
+- name: test shell
+  shell: hostname
+  changed_when: False
+- name: Install htop
+  ansible.builtin.package:
+    name: htop
+    state: present
+- name: Install curl
+  ansible.builtin.package:
+    name: curl
+    state: present

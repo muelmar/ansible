@@ -6,5 +6,10 @@
 - name: Add a line to a file if the file does not exist, without passing regexp
   lineinfile:
     path: "{{ thefile_name }}"
-    line: 192.168.1.99 foo.lab.net foo
+    line: 192.168.1.99 foo.lab.net foohaha
     create: yes
+    owner: ansible
+    group: ansible
+    mode: 0440
+    #validate: "visudo -cf  %s"
+    validate: "ls -l   %s"

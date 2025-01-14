@@ -1,0 +1,27 @@
+---
+# tasks file for docker
+#
+- name: Install essential packages
+  ansible.builtin.package:
+    name: 
+      - htop
+      - curl
+    state: present
+- name: Remove obsolete Docker packages
+  ansible.builtin.package:
+    name: 
+      - ufw
+      - docker
+      - docker-engine
+      - docker.io
+      - containerd
+      - runc
+    state: absent
+    autoremove: yes
+- name: Install zfs
+  ansible.builtin.package:
+    name: zfsutils-linux
+    state: latest
+########
+- name: Add Docker's official GPG key
+  shell: "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -"

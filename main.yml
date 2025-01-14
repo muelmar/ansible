@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: seafile1
   become: yes
   roles:
-        -  update_all_packages
+    -  docker
