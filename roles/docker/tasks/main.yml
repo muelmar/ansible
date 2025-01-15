@@ -7,21 +7,44 @@
       - htop
       - curl
     state: present
+########
+- name: Add Docker's official GPG key
+  shell: "curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc"
+- name: Fix access right on docker.asc
+  ansible.builtin.file:
+    path: "/etc/apt/keyrings/docker.asc"
+    mode: a+r
+- name: Add Docker repository
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ VERSION_CODENAME }} stable
+    state: present
+    update_cache: yes
 - name: Remove obsolete Docker packages
   ansible.builtin.package:
     name: 
       - ufw
-      - docker
+      - docker-doc 
+      - docker-compose 
+      - docker-compose-v2 
+      - podman-docker
       - docker-engine
       - docker.io
       - containerd
       - runc
     state: absent
     autoremove: yes
-- name: Install zfs
+- name: Install zfs and docker
   ansible.builtin.package:
-    name: zfsutils-linux
+    name: 
+      - zfsutils-linux
+      - docker-ce 
+      - docker-ce-cli 
+      - containerd.io 
+      - docker-buildx-plugin 
+      - docker-compose-plugin
     state: latest
-########
-- name: Add Docker's official GPG key
-  shell: "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -"
+- name: Ensure Docker service is started and enabled
+  service:
+    name: docker
+    state: started
+    enabled: yes
