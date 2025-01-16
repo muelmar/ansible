@@ -6,6 +6,7 @@
     name: 
       - htop
       - curl
+      - wget
     state: present
 ########
 - name: Add Docker's official GPG key
@@ -43,6 +44,26 @@
       - docker-buildx-plugin 
       - docker-compose-plugin
     state: latest
+    #######
+- name: Check if the zpool exists
+  command: "zpool list {{ zpool_name }}"
+  register: zpool_check
+  ignore_errors: yes
+
+- name: Create zpool if it doesn't exist
+  command: "zpool create {{ zpool_name }}  {{ zdevice1 }} "
+  when: zpool_check.rc != 0
+
+- name: Ensure the zpool is created
+  command: "zpool list {{ zpool_name }}"
+  register: zpool_status
+  failed_when: zpool_status.rc != 0
+  ######
+- name: create datasets (zfs filesystems)
+  include_tasks: "zfs_dataset.yml" 
+  loop: "{{ datasets }}"
+  loop_control:
+    label: "{{ item.name }}"
 - name: Ensure Docker service is started and enabled
   service:
     name: docker

@@ -1,0 +1,12 @@
+---
+zpool_name: "rootvg"
+zdevice1: "/dev/sdb"
+###
+datasets:
+  - name: seafile
+    mountpoint: /opt/seafile
+    pool: "{{ zpool_name }}"
+  - name: seafile_tmp
+    mountpoint: /opt/seafile/tmp
+    pool: "{{ zpool_name }}"
+    

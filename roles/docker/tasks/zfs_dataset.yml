@@ -1,0 +1,11 @@
+---
+- name: Check if the filesystem exists
+  command: "zfs list {{ item.pool }}/{{ item.name }}"
+  register: fs_check
+  ignore_errors: yes
+  ####
+- name: create datasets (zfs filesystems)
+  command: "zfs create -o mountpoint={{ item.mountpoint }}  {{ item.pool }}/{{ item.name }}"
+  when: fs_check.rc != 0
+#########
+
