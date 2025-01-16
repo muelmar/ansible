@@ -6,7 +6,7 @@ datasets:
   - name: seafile
     mountpoint: /opt/seafile
     pool: "{{ zpool_name }}"
-  - name: seafile_tmp
-    mountpoint: /opt/seafile/tmp
+  - name: var_lib_docker
+    mountpoint: /var/lib/docker
     pool: "{{ zpool_name }}"
     

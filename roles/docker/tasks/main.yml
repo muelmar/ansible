@@ -34,17 +34,12 @@
       - runc
     state: absent
     autoremove: yes
-- name: Install zfs and docker
+    #######
+- name: Install zfs 
   ansible.builtin.package:
     name: 
       - zfsutils-linux
-      - docker-ce 
-      - docker-ce-cli 
-      - containerd.io 
-      - docker-buildx-plugin 
-      - docker-compose-plugin
     state: latest
-    #######
 - name: Check if the zpool exists
   command: "zpool list {{ zpool_name }}"
   register: zpool_check
@@ -64,6 +59,15 @@
   loop: "{{ datasets }}"
   loop_control:
     label: "{{ item.name }}"
+- name: Install  docker
+  ansible.builtin.package:
+    name: 
+      - docker-ce 
+      - docker-ce-cli 
+      - containerd.io 
+      - docker-buildx-plugin 
+      - docker-compose-plugin
+    state: latest
 - name: Ensure Docker service is started and enabled
   service:
     name: docker
