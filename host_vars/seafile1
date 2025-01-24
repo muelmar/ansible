@@ -9,4 +9,3 @@ datasets:
   - name: var_lib_docker
     mountpoint: /var/lib/docker
     pool: "{{ zpool_name }}"
-    
