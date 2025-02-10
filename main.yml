@@ -2,8 +2,14 @@
 - hosts: all
   become: yes
   roles:
-    - docker
-    - update_all_packages
-  tags:
-    - docker
+    - role: docker
+      tags:
+        - docker
+    - role: adguard
+      tags:
+        - adguard
+    - role: update_all_packages
+      tags:
+        - update_all_packages
+
 

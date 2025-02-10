@@ -1,0 +1,4 @@
+---
+# vars file 4 adguard
+#thefile_name: /etc/systemd/resolved.conf.d/adguardhome.conf
+thefile_name: /home/muelmar/systemd/resolved.conf.d/adguardhome.conf

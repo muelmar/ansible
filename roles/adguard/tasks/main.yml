@@ -1,0 +1,36 @@
+---
+# tasks file for adguard
+# check if resolved is enabled
+- name: check services
+  service_facts:
+- name: remember if resolved is running
+  set_fact: has_resolved=ansible_facts['services']['resolved']['status'] | default('no') 
+- block:
+    - name: move old file
+      command: mv -n  /etc/resolv.conf  /etc/resolv.conf.backup
+      args:
+        creates: /home/muelmar/resolv.conf.backup 
+      failed_when: false
+    - name: create symbolic link
+      file:
+        src:  /run/systemd/resolve/resolv.conf 
+        dest: /etc/resolv.conf
+        state: link
+        force: True
+    # change /etc/systemd/resolved.conf.d/adguardhome.conf
+    - name: Add a block to a file if the file does not exist, without passing regexp
+      blockinfile:
+        path: /etc/systemd/resolved.conf.d/adguardhome.conf
+        block: |
+          [Resolve]
+          DNS=127.0.0.1
+          DNSStubListener=no
+        create: yes
+        owner: root
+        group: root
+        mode: 0444
+        validate: "grep DNSStubListener=no  %s"
+    # restart service
+    - name: restart 
+      command: systemctl reload-or-restart systemd-resolved
+  when: has_resolved != 'no'
