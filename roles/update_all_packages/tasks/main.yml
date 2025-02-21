@@ -21,3 +21,11 @@
   ansible.builtin.package:
     name: curl
     state: present
+- name: Check if reboot is needed
+  ansible.builtin.stat:
+    path:  /var/run/reboot-required
+  register: reboot_needed
+- name: print if needed
+  ansible.builtin.debug:
+    msg: "A reboot is needed"
+  when: reboot_needed.stat.exists
