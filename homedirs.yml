@@ -1,0 +1,30 @@
+---
+- name: List owners of /home directories
+  hosts: all
+  become: yes
+  tasks:
+    - name: Get owner of /home directory
+      shell: ls -ld /home/*/
+      register: home_dir_info
+
+    - name: Print owner of /home directory
+      debug:
+        msg: "The owner of /home directory is {{ home_dir_info.stdout_lines[0].split()[2] }}"
+    - name: Print owner of /home/* directories
+      debug:
+        msg: "owner: {{ item.split()[2] }}  directory: {{ item.split()[8] }}"
+      loop: "{{ home_dir_info.stdout_lines }}"
+
+    - name: Get list of user home directories
+      find:
+        paths: /home
+        file_type: directory
+        recurse: no
+      register: home_dirs
+
+    - name: Print owners of all user home directories
+      ansible.builtin.debug:
+        msg: "The owner of {{ item.path }} directory on {{ inventory_hostname }} is {{ item.pw_name }}"
+      loop: "{{ home_dirs.files }}"
+
+
