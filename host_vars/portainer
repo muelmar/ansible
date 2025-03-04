@@ -1,6 +1,8 @@
 ---
 zpool_name: "rootvg"
 zdevice1: "/dev/sdb"
+zpool2_name: "bx500"
+zdevice2: "/dev/sdc"
 ###
 datasets:
   - name: seafile
@@ -9,3 +11,11 @@ datasets:
   - name: var_lib_docker
     mountpoint: /var/lib/docker
     pool: "{{ zpool_name }}"
+####
+users:
+  - name: muelmar
+    mountpoint: /home/muelmar
+    uid: 1912
+  - name: paddy
+    mountpoint: /home/paddy
+    uid: 1705

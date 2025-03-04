@@ -11,5 +11,10 @@
     - role: update_all_packages
       tags:
         - update_all_packages
+        - update
+    - role: create_users
+      tags:
+        - create_users
+        - users
 
 
