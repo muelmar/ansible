@@ -40,19 +40,10 @@
     name: 
       - zfsutils-linux
     state: latest
-- name: Check if the zpool exists
-  command: "zpool list {{ zpool_name }}"
-  register: zpool_check
-  ignore_errors: yes
-
 - name: Create zpool if it doesn't exist
-  command: "zpool create {{ zpool_name }}  {{ zdevice1 }} "
+  command: "zpool create {{ zpool_name }}  {{ zdevice1 }} creates=/{{ zpool_name }}"
   when: zpool_check.rc != 0
 
-- name: Ensure the zpool is created
-  command: "zpool list {{ zpool_name }}"
-  register: zpool_status
-  failed_when: zpool_status.rc != 0
   ######
 - name: create datasets (zfs filesystems)
   include_tasks: "zfs_dataset.yml" 

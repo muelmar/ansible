@@ -1,20 +1,8 @@
 ---
 # tasks file for create_users
 #
-- name: Check if the zpool exists
-  command: "zpool list {{ zpool2_name }}"
-  register: zpool_check
-  ignore_errors: yes
-
 - name: Create zpool if it doesn't exist
-  command: "zpool create {{ zpool2_name }}  {{ zdevice2 }} "
-  when: zpool_check.rc != 0
-
-- name: Ensure the zpool is created
-  command: "zpool list {{ zpool2_name }}"
-  register: zpool_status
-  failed_when: zpool_status.rc != 0
-  ######
+  command: "zpool create {{ zpool2_name }}  {{ zdevice2 }} creates=/{{ zpool2_name }}"
 - name: create datasets (zfs filesystems as homedirs)
   command: "zfs create -o mountpoint={{ item.mountpoint }}  {{ zpool2_name }}/lv_{{ item.name }} creates=/home/{{ item.name }}"
   loop: "{{ users }}"
