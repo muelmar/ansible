@@ -10,17 +10,6 @@
     name: "*"
     state: latest
   when:   ansible_os_family == "RedHat"
-- name: test shell
-  shell: hostname
-  changed_when: False
-- name: Install htop
-  ansible.builtin.package:
-    name: htop
-    state: present
-- name: Install curl
-  ansible.builtin.package:
-    name: curl
-    state: present
 - name: Check if reboot is needed
   ansible.builtin.stat:
     path:  /var/run/reboot-required

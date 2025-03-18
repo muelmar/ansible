@@ -1,7 +1,6 @@
 all:
   hosts:
     turtle:
-      ansible_connection: ssh
       #ansible_host: "192.168.64.20"
       ansible_user: muelmar
       ansible_ssh_common_args: "-o StrictHostKeyChecking=no -o ControlMaster=no -o ControlPath=none"
@@ -10,6 +9,9 @@ all:
       ansible_connection: ssh
       ansible_user: muelmar
     portainer:
+      ansible_connection: ssh
+      ansible_user: ansible
+    blacky:
       ansible_connection: ssh
       ansible_user: ansible
 

@@ -5,5 +5,6 @@ packages:
   - htop
   - vim
   - x2goserver
+  - samba
 unwanted:
   - xrdp
