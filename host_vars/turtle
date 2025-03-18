@@ -1,2 +1,9 @@
 ---
 thefile_name: "/home/ansible/testdir/testfile"
+###
+packages:
+  - htop
+  - vim
+  - x2goserver
+unwanted:
+  - xrdp

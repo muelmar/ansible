@@ -1,2 +1,19 @@
 ---
-# tasks file for packages
+# tasks file for packages installs packages according to host_vars
+#
+- name: Install essential packages
+  ansible.builtin.package:
+    name:
+      - "{{ item }}" 
+    state: present
+  loop: "{{ packages }}"
+  loop_control:
+    label: "{{ item }}"
+########
+- name: remove unwanted
+  ansible.builtin.package:
+    name:  "{{ item }}"
+    state: absent
+  loop: "{{ unwanted }}"
+  loop_control:
+    label: "{{ item }}"
