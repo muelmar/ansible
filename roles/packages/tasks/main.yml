@@ -1,7 +1,20 @@
 ---
 # tasks file for packages installs packages according to host_vars
 #
+- name: update cache
+  apt:
+    update_cache: yes
+  changed_when: False
 - name: Install essential packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages }}"
+  loop_control:
+    label: "{{ item }}"
+  when:   ansible_os_family == "Debian"
+
+- name: Install essential packages for non debians
   ansible.builtin.package:
     name:
       - "{{ item }}" 
@@ -9,11 +22,22 @@
   loop: "{{ packages }}"
   loop_control:
     label: "{{ item }}"
+  when:   ansible_os_family != "Debian"
 ########
-- name: remove unwanted
+- name: remove unwanted packages
+  apt:
+    name: "{{ item }}"
+    state: absent
+  loop: "{{ unwanted }}"
+  loop_control:
+    label: "{{ item }}"
+  when:   ansible_os_family == "Debian"
+###
+- name: remove unwanted (non debian)
   ansible.builtin.package:
     name:  "{{ item }}"
     state: absent
   loop: "{{ unwanted }}"
   loop_control:
     label: "{{ item }}"
+  when:   ansible_os_family != "Debian"
