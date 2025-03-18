@@ -16,5 +16,8 @@
       tags:
         - create_users
         - users
+    - role: packages
+      tags:
+        - packages
 
 
