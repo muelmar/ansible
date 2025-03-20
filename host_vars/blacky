@@ -1,0 +1,6 @@
+packages:
+  - htop
+  - vim
+  - qpdf
+unwanted:
+  - xrdp
