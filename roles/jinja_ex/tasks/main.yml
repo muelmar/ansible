@@ -1,0 +1,8 @@
+---
+# tasks file for jinja_ex
+- name: Expand a template
+  template: 
+    src: atemplate.j2
+    dest: /tmp/testfile.txt
+    mode: 0750
+    owner: muelmar

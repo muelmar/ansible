@@ -1,4 +1,11 @@
 ---
+#some test variables
+the_list:
+  - item1
+  - item2
+the_var: "a string in lowercase"
+the_string: "OTTO"
+the_number: 42
 thefile_name: "/home/ansible/testdir/testfile"
 ###
 packages:

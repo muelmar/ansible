@@ -1,0 +1,22 @@
+Hello
+in this file there is a variable. The machine is a {{ ansible_os_family }}
+in uppercase: {{ the_var | upper }}
+{% if the_string | lower  == 'otto' %}
+{{ the_string | replace ("TT","DD") }} ist ein {{ the_string }} mit Rechtschreibfehler
+  {% set es_gib_otto = 'ok' %}
+{% else %}
+  {% set es_gib_otto = '' %}
+{% endif %}
+{%if the_number is defined %}
+  {% if the_number == 42 %}
+You are right
+  {% else %}
+this has to be reported
+  {% endif %}
+{% endif %}
+A list of items
+{% for ding in packages %}
+this package is installed: {{ ding }}
+{% endfor %}
+Gibt es otto? {{ es_gib_otto }}
+

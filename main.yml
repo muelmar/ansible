@@ -19,5 +19,9 @@
     - role: packages
       tags:
         - packages
+    - role: jinja_ex
+      tags:
+        - jinja_ex
+        - jinja
 
 
