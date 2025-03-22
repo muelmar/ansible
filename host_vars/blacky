@@ -2,5 +2,6 @@ packages:
   - htop
   - vim
   - qpdf
+  - scribus
 unwanted:
   - xrdp
