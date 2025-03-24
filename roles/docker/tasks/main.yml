@@ -42,7 +42,6 @@
     state: latest
 - name: Create zpool if it doesn't exist
   command: "zpool create {{ zpool_name }}  {{ zdevice1 }} creates=/{{ zpool_name }}"
-  when: zpool_check.rc != 0
 
   ######
 - name: create datasets (zfs filesystems)

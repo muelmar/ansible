@@ -7,5 +7,16 @@
 - name: create datasets (zfs filesystems)
   command: "zfs create -o mountpoint={{ item.mountpoint }}  {{ item.pool }}/{{ item.name }}"
   when: fs_check.rc != 0
+##########
+- name:  chown mountpoint if requested
+  file:
+    path: "{{ item.mountpoint }}"
+    owner: "{{ item.owner }}"
+  when: item.owner is defined
+- name: chgroup mountpoint if requested
+  file:
+    path: "{{ item.mountpoint }}"
+    group: "{{ item.group }}"
+  when: item.group is defined
 #########
 
