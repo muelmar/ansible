@@ -9,7 +9,7 @@ the_number: 42
 thefile_name: "/home/ansible/testdir/testfile"
 ###
 packages:
-  - htop
+  - btop
   - vim
   - x2goserver
   - samba
