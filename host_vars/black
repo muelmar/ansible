@@ -1,5 +1,5 @@
 ---
-haslvm: True
+#haslvm: True
 users:
   - name: muelmar
     mountpoint: /home/muelmar
