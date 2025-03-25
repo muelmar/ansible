@@ -1,0 +1,14 @@
+---
+haslvm: True
+users:
+  - name: muelmar
+    mountpoint: /home/muelmar
+    uid: 1912
+  - name: paddy
+    mountpoint: /home/paddy
+    uid: 1705
+packages:
+  - minidlna
+  - htop
+unwanted:
+  - handbrake

@@ -1,0 +1,66 @@
+---
+# tasks file for create_usr_lvm
+#
+###
+- name: create logical volume
+  lvol:
+    vg: "{{ item.vgname | default('system') }}"
+    lv: "lv_{{ item.name }}"
+    size: "{{ item.lvsize | default('5G') }}"
+    state: present
+  loop: "{{ users }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: lvmhost 
+- name: "make filesystem"
+  filesystem:
+    fstype: "{{ item.fstype | default('ext4') }}"
+    dev: "/dev/{{ item.vgname | default('system') }}/lv_{{ item.name }}"
+  loop: "{{ users }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: lvmhost 
+- name: mount into /home or whatever was requested
+  ansible.posix.mount: 
+  #path: "{{ item.mountpoint | default(/home/{{ item.name }}) }}"
+    path: "{{ item.mountpoint }}"
+    src:  "/dev/{{ item.vgname | default('system') }}/lv_{{ item.name }}"
+    fstype: "{{ item.fstype | default('ext4') }}"
+    opts: "defaults"
+    state: mounted
+  loop: "{{ users }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: lvmhost 
+  ############################
+- name: create homedir
+  ansible.builtin.file:
+    path: "{{ item.mountpoint }}"
+    state: directory
+    owner: "{{ item.uid }}"
+    group: "{{ item.uid }}"
+    mode: 0750
+  loop: "{{ users }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: lvmhost 
+###
+- name: create groups
+  ansible.builtin.group:
+    name: "{{ item.name }}"
+    state: present
+    gid: "{{ item.uid }}"
+  loop: "{{ users }}"
+  loop_control:
+    label: "{{ item.name }}"
+- name: create users
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    shell: /bin/bash
+    comment: "{{ item.name }}"
+    generate_ssh_key: true
+    group:  "{{ item.name }}"
+    uid:  "{{ item.uid }}"
+  loop: "{{ users }}"
+  loop_control:
+    label: "{{ item.name }}"

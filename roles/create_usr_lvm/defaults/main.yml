@@ -1,0 +1,6 @@
+---
+# defaults file for create_usr_lvm
+lvmhost: "{{ haslvm | default(False)  }}"
+#lvmhost: True
+
+

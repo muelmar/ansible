@@ -15,7 +15,10 @@
     - role: create_users
       tags:
         - create_users
-        - users
+    - role: create_usr_lvm
+      tags:
+        - create_usr_lvm
+        - lvmusers
     - role: packages
       tags:
         - packages
