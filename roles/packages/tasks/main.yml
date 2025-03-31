@@ -37,6 +37,8 @@
   ansible.builtin.package:
     name:  "{{ item }}"
     state: absent
+    autoremove: True
+    purge: True
   loop: "{{ unwanted }}"
   loop_control:
     label: "{{ item }}"
