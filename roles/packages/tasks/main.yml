@@ -27,6 +27,8 @@
 - name: remove unwanted packages
   apt:
     name: "{{ item }}"
+    autoremove: True
+    purge: True
     state: absent
   loop: "{{ unwanted }}"
   loop_control:
