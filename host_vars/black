@@ -8,7 +8,9 @@ users:
     mountpoint: /home/paddy
     uid: 1705
 packages:
-  - minidlna
+  - x2goserver
   - htop
-unwanted:
   - handbrake
+  - asunder
+unwanted:
+  - minidlna
