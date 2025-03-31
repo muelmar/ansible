@@ -12,6 +12,7 @@ packages:
   - htop
   - handbrake
   - asunder
+  - xfwm4-tweaks-settings
 unwanted:
   - minidlna
   - libreoffice-core-nogui
