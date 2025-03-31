@@ -14,4 +14,4 @@ packages:
   - asunder
 unwanted:
   - minidlna
-  - libreoffice
+  - libreoffice-core
