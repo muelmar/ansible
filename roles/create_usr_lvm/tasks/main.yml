@@ -7,6 +7,7 @@
     vg: "{{ item.vgname | default('system') }}"
     lv: "lv_{{ item.name }}"
     size: "{{ item.lvsize | default('5G') }}"
+    resizefs: True
     state: present
   loop: "{{ users }}"
   loop_control:
@@ -60,6 +61,8 @@
     comment: "{{ item.name }}"
     generate_ssh_key: true
     group:  "{{ item.name }}"
+    groups: "{{ item.groups | default(item.name) }}"
+    append: "{{ item.append | default(False) }}"
     uid:  "{{ item.uid }}"
   loop: "{{ users }}"
   loop_control:

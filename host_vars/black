@@ -3,7 +3,10 @@
 users:
   - name: muelmar
     mountpoint: /home/muelmar
+    groups: microk8s
+    append: true
     uid: 1912
+    lvsize: 31G
   - name: paddy
     mountpoint: /home/paddy
     uid: 1705
