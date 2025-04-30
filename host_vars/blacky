@@ -3,5 +3,6 @@ packages:
   - vim
   - qpdf
   - scribus
+  - syncthing-gtk
 unwanted:
   - xrdp

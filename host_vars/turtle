@@ -13,5 +13,6 @@ packages:
   - vim
   - x2goserver
   - samba
+  - syncthing-gtk
 unwanted:
   - xrdp
