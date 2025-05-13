@@ -4,5 +4,6 @@ packages:
   - qpdf
   - scribus
   - syncthing-gtk
+  - x2goserver
 unwanted:
   - xrdp
