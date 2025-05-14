@@ -20,3 +20,4 @@ unwanted:
   - minidlna
   - libreoffice-core-nogui
   - libreoffice-core
+  - avahi-daemon
