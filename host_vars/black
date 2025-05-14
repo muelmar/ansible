@@ -15,6 +15,7 @@ packages:
   - htop
   - handbrake
   - asunder
+  - samba
 unwanted:
   - minidlna
   - libreoffice-core-nogui
