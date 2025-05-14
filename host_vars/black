@@ -16,6 +16,7 @@ packages:
   - handbrake
   - asunder
   - samba
+  - smbclient
 unwanted:
   - minidlna
   - libreoffice-core-nogui
