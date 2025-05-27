@@ -1,0 +1,16 @@
+---
+- name: create user to test the user module
+  hosts: turtle
+  become: True
+  tasks:
+    - name: create users
+      ansible.builtin.user:
+        name: ansible_test
+        shell: /bin/bash
+        comment: "Kann geloescht werden"
+        generate_ssh_key: false
+        group:  users
+        remove:  True
+        password:  'oscar1818181'
+        state: absent
+
