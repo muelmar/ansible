@@ -11,7 +11,7 @@
         generate_ssh_key: false
         group:  users
         remove:  True
-        password:  'oscar1818181'
+        password:  '!!'
         state: absent
     - name: create group
       ansible.builtin.group:
