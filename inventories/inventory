@@ -16,4 +16,7 @@ all:
     blacky:
       ansible_connection: ssh
       ansible_user: ansible
+    seafile:
+      ansible_connection: ssh
+      ansible_user: pi
 

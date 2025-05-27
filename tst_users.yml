@@ -12,6 +12,7 @@
         group:  users
         remove:  True
         password:  '!!'
+        password_expire_max: -1
         state: absent
     - name: create group
       ansible.builtin.group:
