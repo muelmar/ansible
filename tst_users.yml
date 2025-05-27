@@ -13,4 +13,8 @@
         remove:  True
         password:  'oscar1818181'
         state: absent
+    - name: create group
+      ansible.builtin.group:
+        name: ansible_test
+        state: absent
 
