@@ -14,5 +14,6 @@ packages:
   - x2goserver
   - samba
   - syncthing-gtk
+  - dia
 unwanted:
   - xrdp
