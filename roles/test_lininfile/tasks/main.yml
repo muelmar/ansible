@@ -5,16 +5,25 @@
     var:  thefile_name
   tags:
     - alle
-- name: Add a line to a file if the file does not exist, without passing regexp
+- name: create a line if no filter present
   lineinfile:
     path: "{{ thefile_name }}"
-    line: 192.168.1.99 foo.lab.net foohaha
+    regex: 'filter_users =.*'
+    line: "filter_users = "
     create: yes
-    owner: ansible
-    group: ansible
+    owner: muelmar
+    group: muelmar
     mode: 0440
     #validate: "visudo -cf  %s"
     validate: "ls -l   %s"
+- name: Add a line to a file if the file does not exist
+  lineinfile:
+    path: "{{ thefile_name }}"
+    regex: '^(filter_users *=.*)$' 
+    line: '\1 {{ filer_users | join(",") }}'
+    backrefs: yes
+  notify: restart sshd
+     
   tags: 
     - alle
     - einzeln

@@ -6,7 +6,10 @@ the_list:
 the_var: "a string in lowercase"
 the_string: "OTTO"
 the_number: 42
-thefile_name: "/home/ansible/testdir/testfile"
+thefile_name: "/home/muelmar/tmp/testfile"
+filer_users:
+  - otto
+  - scanner
 ###
 packages:
   - btop

@@ -1,0 +1,9 @@
+---
+- hosts: turtle
+  become: yes
+  roles:
+    - role: test_lininfile
+      tags:
+        - lininfile
+        - lineinfile
+        - test_lininfile
