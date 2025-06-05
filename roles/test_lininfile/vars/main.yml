@@ -1,3 +1,9 @@
 ---
 # vars file 4 test_lininfile
 thefile_name: /tmp/mmtestfile
+filter_users_key: filter_users
+filter_groups_key: filter_users
+filter_users_new: 
+  - arschible
+  - scanner
+

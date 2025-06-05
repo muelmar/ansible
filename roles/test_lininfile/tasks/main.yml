@@ -5,25 +5,54 @@
     var:  thefile_name
   tags:
     - alle
-- name: create a line if no filter present
-  lineinfile:
-    path: "{{ thefile_name }}"
-    regex: 'filter_users =.*'
-    line: "filter_users = "
-    create: yes
-    owner: muelmar
-    group: muelmar
-    mode: 0440
+#- name: create a line if no filter present
+#  lineinfile:
+#    path: "{{ thefile_name }}"
+#    regex: 'filter_users'
+#    line: "filter_users = "
+#    create: yes
+#    owner: muelmar
+#    group: muelmar
+#    mode: 0440
     #validate: "visudo -cf  %s"
-    validate: "ls -l   %s"
-- name: Add a line to a file if the file does not exist
+#    validate: "ls -l   %s"
+- name: Read current filter_users line
+  command: grep "^{{ filter_users_key }}\s*=" {{ thefile_name }}
+  register: filter_users_line
+  failed_when: false
+  changed_when: false
+- name: Parse existing users
+  set_fact:
+    filter_users_existing: >-
+      {{
+        filter_users_line.stdout.split('=')[1]
+        | trim
+        | split(',')
+        if filter_users_line.stdout else []
+      }}
+
+#
+
+- name: Add a line to the file if there is no such line
+  shell: grep '^{{ filter_users_key }}\s*=' {{ thefile_name }} 
+  register: found_users
+  failed_when: false
+  changed_when: false
+- name: Whe need a line matching filer_users_key
   lineinfile:
     path: "{{ thefile_name }}"
-    regex: '^(filter_users *=.*)$' 
-    line: '\1 {{ filer_users | join(",") }}'
-    backrefs: yes
-  notify: restart sshd
+    line: "{{ filter_users_key }} = "
+  when: found_users.rc != 0
+- name: Merge new and existing users
+  set_fact:
+    filter_users_merged: "{{ (filter_users_existing + filter_users_new)  |select() |unique }}"
+- name: print var
+  debug:
+    var:  filter_users_merged
+- name: Add a line to a file 
+  lineinfile:
+    path: "{{ thefile_name }}"
+    regexp: '^{{ filter_users_key }}\s*='
+    line: "{{ filter_users_key }} = {{ filter_users_merged | join(',') }}"
      
-  tags: 
-    - alle
-    - einzeln
+
