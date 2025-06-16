@@ -6,5 +6,6 @@ packages:
   - syncthing-gtk
   - x2goserver
   - flameshot
+  - jdupes
 unwanted:
   - xrdp

@@ -17,6 +17,7 @@ packages:
   - asunder
   - samba
   - smbclient
+  - jdupes
 unwanted:
   - minidlna
   - libreoffice-core-nogui

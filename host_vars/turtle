@@ -18,5 +18,6 @@ packages:
   - samba
   - syncthing-gtk
   - dia
+  - jdupes
 unwanted:
   - xrdp
