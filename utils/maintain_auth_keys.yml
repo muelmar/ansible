@@ -1,0 +1,36 @@
+---
+- hosts: turtle
+  vars:
+    todo: "add"
+    user: "muelmar"
+    pubkey: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEbIReAEvbub+8wMR4rnNXVbmt80MuQm2g5TjnVXdGk8 muelmar@ThinkPad-T480"
+  tasks:
+#- name: create a line if no filter present
+#  lineinfile:
+#    path: "{{ thefile_name }}"
+#    regex: 'filter_users'
+#    line: "filter_users = "
+#    create: yes
+#    owner: muelmar
+#    group: muelmar
+#    mode: 0440
+    #validate: "visudo -cf  %s"
+#    validate: "ls -l   %s"
+  - name: Check if the file exists
+    stat:
+      path: "/home/{{ user }}/.ssh/authorized_keys"
+    register: file_stat
+  - name: add the key if missing
+    lineinfile:
+      state: present
+      path: "/home/{{ user }}/.ssh/authorized_keys"
+      line: "{{ pubkey }}"
+      create: No
+    when: todo  == "add" and file_stat.stat.exists
+  - name: remove key
+    lineinfile:
+      state: absent
+      path: "/home/{{ user }}/.ssh/authorized_keys"
+      line: "{{ pubkey }}"
+      create: No
+    when: todo  == "remove" and file_stat.stat.exists
