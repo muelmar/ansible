@@ -7,5 +7,6 @@ packages:
   - x2goserver
   - flameshot
   - jdupes
+  - nemo
 unwanted:
   - xrdp
