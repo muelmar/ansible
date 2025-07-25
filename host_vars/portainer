@@ -28,5 +28,6 @@ packages:
   - minidlna
   - htop
   - jdupes
+  - ufw
 unwanted:
   - handbrake
