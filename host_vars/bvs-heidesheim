@@ -1,0 +1,25 @@
+---
+haslvm: True
+bvs_fstype: ext4
+
+users:
+  - name: BuechereiHdH
+    mountpoint: /home/bvs/BuechereiHdH
+    groups: bvs
+    append: true
+    uid: 1234
+  - name: BuechereiHdH2
+    mountpoint: /home/bvs/BuechereiHdH2
+    groups: bvs
+    append: true
+    uid: 1235
+packages:
+  - x2goserver
+  - htop
+  - jdupes
+  - wine
+  - ssh
+unwanted:
+  - minidlna
+  - libreoffice-core-nogui
+  - libreoffice-core
