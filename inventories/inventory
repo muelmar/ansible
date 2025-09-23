@@ -16,3 +16,6 @@ all:
     blacky:
       ansible_connection: ssh
       ansible_user: ansible
+    bvs-heidesheim:
+      ansible_connection: ssh
+      ansible_user: ansible
