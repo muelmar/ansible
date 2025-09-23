@@ -26,5 +26,8 @@
       tags:
         - jinja_ex
         - jinja
+    - role: bvs
+      tags:
+        - bvs
 
 
