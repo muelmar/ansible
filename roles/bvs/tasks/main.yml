@@ -1,2 +1,30 @@
 ---
 # tasks file for bvs
+#- name: create groups bvss
+  ansible.builtin.group:
+    name: "bvs"
+    state: present
+    gid: 1234
+      #
+- name: create logical volume
+  lvol:
+    vg: "{{ bvs_vgname | default('vgroot')"
+    lv: "lvbvs"
+    size: "{{ bvs_lvsize | default('10G') }}"
+    resizefs: True
+    state: present
+      #
+- name: "make filesystem"
+  filesystem:
+    fstype: "{{ bvs_fstype | default('ext4') }}"
+    dev: "/dev/{{ bvs_vgname | default('vgroot') }}/lvbvs }}"
+      #
+- name: mount into /home 
+  ansible.posix.mount:
+    path: "/home/bvs"
+    src:  "/dev/{{ bvs_vgname | default('vgroot') }}/lv_bvs }}"
+    fstype: "{{ bvs_fstype | default('ext4') }}"
+    opts: "defaults"
+    state: mounted
+
+
