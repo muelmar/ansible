@@ -29,5 +29,6 @@ packages:
   - htop
   - jdupes
   - ufw
+  - nvme-cli
 unwanted:
   - handbrake

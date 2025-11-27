@@ -19,5 +19,6 @@ packages:
   - syncthing-gtk
   - dia
   - jdupes
+  - nvme-cli
 unwanted:
   - xrdp
