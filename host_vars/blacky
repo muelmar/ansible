@@ -8,5 +8,6 @@ packages:
   - flameshot
   - jdupes
   - nemo
+  - libvips-tools
 unwanted:
   - xrdp
