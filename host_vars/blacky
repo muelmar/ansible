@@ -9,5 +9,6 @@ packages:
   - jdupes
   - nemo
   - libvips-tools
+  - cheese
 unwanted:
   - xrdp
