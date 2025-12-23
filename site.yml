@@ -1,0 +1,11 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    - role: read_global_vars
+      tags:
+        - allways
+    - role: variables
+      tags:
+        - variables
+...

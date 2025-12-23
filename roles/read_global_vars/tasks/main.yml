@@ -1,0 +1,6 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for roles/read_global_variables
+- name: get vars
+  #include_vars: /home/muelmar/ansible_dev/vars/main.yml
+  include_vars: mmmain.yml
