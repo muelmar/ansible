@@ -23,7 +23,6 @@
 - name: Remove obsolete Docker packages
   ansible.builtin.package:
     name: 
-      - ufw
       - docker-doc 
       - docker-compose 
       - docker-compose-v2 

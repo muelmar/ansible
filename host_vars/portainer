@@ -16,6 +16,11 @@ datasets:
     pool: "{{ zpool2_name }}"
     owner: minidlna
     group: minidlna
+  - name: opt_papra
+    mountpoint: /opt/papra
+    pool: "{{ zpool_name }}"
+    owner: papra
+    group: papra
 ####
 users:
   - name: muelmar
@@ -24,6 +29,9 @@ users:
   - name: paddy
     mountpoint: /home/paddy
     uid: 1705
+  - name: papra
+    mountpoint: /home/papra
+    uid: 1221
 packages:
   - minidlna
   - htop
