@@ -2,13 +2,6 @@
 #haslvm: True
 zpool_name:name: tank
 zdevice: /dev/sda
-datasets:
-  - name: home_minidlna
-    mountpoint: /home/minidlna
-    pool: "{{ zpool_name }}"
-    owner: rclone
-    group: rclone
-
 users:
   - name: muelmar
     mountpoint: /home/muelmar
@@ -20,6 +13,7 @@ users:
     mountpoint: /home/rclone
     uid: 3200
     gid: 3200
+    zpool: tank
   - name: paddy
     mountpoint: /home/paddy
     uid: 1705
