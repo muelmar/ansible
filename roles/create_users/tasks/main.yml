@@ -3,7 +3,7 @@
 #
 - name: Create zpool if it doesn't exist
   command: "zpool create {{ zpool2_name }}  {{ zdevice2 }} creates=/{{ zpool2_name }}"
-  when zpool2_name is defined
+  when: zpool2_name is defined
 - name: create datasets (zfs filesystems as homedirs)
   command: "zfs create -o mountpoint={{ item.mountpoint }}  {{ item.zpool }}/lv_{{ item.name }} creates=/home/{{ item.name }}"
   loop: "{{ users }}"
