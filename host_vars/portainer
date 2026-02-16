@@ -37,6 +37,8 @@ packages:
   - htop
   - jdupes
   - ufw
+  - cifs-utils 
+  - keyutils
 unwanted:
   - handbrake
   - nvme-cli

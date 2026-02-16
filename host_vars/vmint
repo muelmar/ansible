@@ -1,0 +1,7 @@
+packages:
+  - btop
+  - zfsutils-linux
+  - lvm2
+  - vim
+unwanted:
+  - xrdp
