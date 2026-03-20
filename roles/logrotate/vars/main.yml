@@ -1,2 +1,22 @@
 ---
 # vars file for logrotate
+    lp_logrotate_confd:
+      - path: ansible
+        conf: |
+          /var/log/ansible.log {
+                 weekly
+                 rotate 3
+                 size 10M
+                 compress
+                 delaycompress
+          }
+
+      - path: hugo
+        conf: |
+          /var/log/otto.log {
+                 weekly
+                 rotate 3
+                 size 10M
+                 compress
+                 delaycompress
+          }
