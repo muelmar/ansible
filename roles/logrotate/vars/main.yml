@@ -11,12 +11,3 @@
                  delaycompress
           }
 
-      - path: hugo
-        conf: |
-          /var/log/otto.log {
-                 weekly
-                 rotate 3
-                 size 10M
-                 compress
-                 delaycompress
-          }

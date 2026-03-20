@@ -1,38 +1,5 @@
 ---
 # tasks file for logrotate
-- name: "Logrotate: Debug lp_logrotate_debug={{ lp_logrotate_debug }}"
-  when: lp_logrotate_debug | bool
-  tags: lp_logrotate_debug
-  vars:
-    msg: |-
-      ansible_os_family: {{ ansible_facts['os_family'] }}
-      lp_logrotate_install: {{ lp_logrotate_install }}
-      lp_logrotate_packages:
-        {{ lp_logrotate_packages | to_nice_yaml(indent=2) | indent(2) }}
-      lp_backup_conf: {{ lp_backup_conf }}
-  ansible.builtin.debug:
-    msg: "{{ '{}'.format(msg) }}"
-
-
-- name: "Logrotate: Configure blocks in {{ lp_logrotate_conf_file }}"
-  tags: lp_logrotate_conf_blocks
-  ansible.builtin.blockinfile:
-    path: "{{ lp_logrotate_conf_file }}"
-    mark: "{{ item.mark }}"
-    block: "{{ item.block }}"
-    state: "{{ item.state }}"
-    backup: "{{ lp_backup_conf }}"
-  loop: "{{ lp_logrotate_conf_blocks }}"
-
-- name: "Logrotate: Configure lines in {{ lp_logrotate_conf_file }}"
-  tags: lp_logrotate_conf_lines
-  ansible.builtin.lineinfile:
-    path: "{{ lp_logrotate_conf_file }}"
-    line: "{{ item.line }}"
-    state: "{{ item.state }}"
-    backup: "{{ lp_backup_conf }}"
-  loop: "{{ lp_logrotate_conf_lines }}"
-
 - name: "Logrotate: Configure {{ lp_logrotate_conf_dir }}"
   tags: lp_logrotate_confd
   ansible.builtin.blockinfile:
@@ -47,4 +14,3 @@
   loop_control:
     label: "{{ item.path }}"
 
-# EOF
