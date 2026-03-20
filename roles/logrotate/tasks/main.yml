@@ -1,0 +1,16 @@
+---
+# tasks file for logrotate
+- name: "Logrotate: Configure {{ lp_logrotate_conf_dir }}"
+  tags: lp_logrotate_confd
+  ansible.builtin.blockinfile:
+    path: "{{ lp_logrotate_conf_dir }}/{{ item.path }}"
+    block: "{{ item.conf }}"
+    backup: "{{ lp_backup_conf }}"
+    create: true
+    owner: "{{ item.owner | d('root') }}"
+    group: "{{ item.group | d('root') }}"
+    mode: "{{ item.mode | d('0644') }}"
+  loop: "{{ lp_logrotate_confd }}"
+  loop_control:
+    label: "{{ item.path }}"
+

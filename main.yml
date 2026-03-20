@@ -29,5 +29,8 @@
     - role: bvs
       tags:
         - bvs
+    - role: logrotate
+      tags:
+        - logrotate
 
 

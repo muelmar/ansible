@@ -1,0 +1,7 @@
+---
+# defaults file for logrotate
+# lp_logrotate: false
+lp_logrotate_conf_file: /etc/logrotate.conf
+lp_logrotate_conf_dir: /etc/logrotate.d
+lp_logrotate_confd: []
+lp_backup_conf: false
