@@ -1,0 +1,153 @@
+---
+# tasks file for dir-to-lv-migration
+- name: Validate mandatory variables
+  ansible.builtin.assert:
+    that:
+      - lv_migration_path | length > 0
+      - lv_migration_lv_device | length > 0
+      - lv_migration_fstype | length > 0
+      - lv_migration_service_name | length > 0
+    fail_msg: "Set lv_migration_path, lv_migration_lv_device, lv_migration_fstype and lv_migration_service_name."
+
+- name: Check migration path
+  ansible.builtin.stat:
+    path: "{{ lv_migration_path }}"
+  register: lv_migration_path_stat
+
+- name: Ensure migration path exists as directory
+  ansible.builtin.assert:
+    that:
+      - lv_migration_path_stat.stat.exists
+      - lv_migration_path_stat.stat.isdir
+    fail_msg: "lv_migration_path must exist and be a directory: {{ lv_migration_path }}"
+
+- name: Resolve backup path
+  ansible.builtin.set_fact:
+    lv_migration_effective_backup_path: "{{ lv_migration_backup_path | default('', true) | length > 0 | ternary(lv_migration_backup_path, lv_migration_path ~ '.pre-lv') }}"
+
+- name: Read current mount source for migration path
+  ansible.builtin.command:
+    argv:
+      - findmnt
+      - -n
+      - -o
+      - SOURCE
+      - --target
+      - "{{ lv_migration_path }}"
+  register: lv_migration_findmnt
+  changed_when: false
+  failed_when: false
+
+- name: Read canonical LV device path
+  ansible.builtin.command:
+    argv:
+      - readlink
+      - -f
+      - "{{ lv_migration_lv_device }}"
+  register: lv_migration_lv_realpath
+  changed_when: false
+  failed_when: false
+
+- name: Read canonical current mount source path
+  ansible.builtin.command:
+    argv:
+      - readlink
+      - -f
+      - "{{ lv_migration_findmnt.stdout | trim }}"
+  register: lv_migration_current_realpath
+  changed_when: false
+  failed_when: false
+  when: (lv_migration_findmnt.stdout | trim) | length > 0
+
+- name: Evaluate migration state
+  ansible.builtin.set_fact:
+    lv_migration_current_source: "{{ lv_migration_findmnt.stdout | trim }}"
+    lv_migration_already_on_target: >-
+      {{
+        (lv_migration_findmnt.stdout | trim) | length > 0 and
+        (
+          (lv_migration_findmnt.stdout | trim) == lv_migration_lv_device or
+          (
+            (lv_migration_current_realpath.stdout | default('') | trim) | length > 0 and
+            (lv_migration_lv_realpath.stdout | default('') | trim) | length > 0 and
+            (lv_migration_current_realpath.stdout | trim) == (lv_migration_lv_realpath.stdout | trim)
+          )
+        )
+      }}
+
+- name: Refuse migration when another filesystem is already mounted at path
+  ansible.builtin.fail:
+    msg: >-
+      {{ lv_migration_path }} is already mounted from {{ lv_migration_current_source }}.
+      Expected LV source {{ lv_migration_lv_device }}.
+  when:
+    - (lv_migration_current_source | length) > 0
+    - not lv_migration_already_on_target
+
+- name: Migrate directory to LV mountpoint
+  when: not lv_migration_already_on_target
+  block:
+    - name: Stop service before migration
+      become: true
+      ansible.builtin.service:
+        name: "{{ lv_migration_service_name }}"
+        state: stopped
+
+    - name: Ensure backup path does not already exist
+      ansible.builtin.stat:
+        path: "{{ lv_migration_effective_backup_path }}"
+      register: lv_migration_backup_stat
+
+    - name: Fail when backup path already exists
+      ansible.builtin.fail:
+        msg: >-
+          Backup path already exists: {{ lv_migration_effective_backup_path }}.
+          Clean it up or set lv_migration_backup_path.
+      when: lv_migration_backup_stat.stat.exists
+
+    - name: Move original directory to backup location
+      become: true
+      ansible.builtin.command:
+        argv:
+          - mv
+          - "{{ lv_migration_path }}"
+          - "{{ lv_migration_effective_backup_path }}"
+
+    - name: Recreate mountpoint directory
+      become: true
+      ansible.builtin.file:
+        path: "{{ lv_migration_path }}"
+        state: directory
+        mode: "0755"
+
+    - name: Mount LV at target path
+      become: true
+      ansible.posix.mount:
+        path: "{{ lv_migration_path }}"
+        src: "{{ lv_migration_lv_device }}"
+        fstype: "{{ lv_migration_fstype }}"
+        opts: "{{ lv_migration_mount_opts }}"
+        state: mounted
+
+    - name: Copy data into mounted LV
+      become: true
+      ansible.builtin.command:
+        argv:
+          - cp
+          - -a
+          - "{{ lv_migration_effective_backup_path }}/."
+          - "{{ lv_migration_path }}/"
+
+    - name: Remove backup directory when requested
+      become: true
+      ansible.builtin.file:
+        path: "{{ lv_migration_effective_backup_path }}"
+        state: absent
+      when: not lv_migration_keep_backup
+
+  always:
+    - name: Start service after migration attempt
+      become: true
+      ansible.builtin.service:
+        name: "{{ lv_migration_service_name }}"
+        state: started

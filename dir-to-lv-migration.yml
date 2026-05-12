@@ -1,0 +1,12 @@
+---
+- name: Move directory to LV mounted on same path
+  hosts: all
+  gather_facts: false
+  become: true
+  vars:
+    - lv_migration_path: /media/the_test_dir
+    - lv_migration_lv_device: /dev/mapper/almalinux_vbox-newfs
+    - lv_migration_fstype: xfs
+    - lv_migration_service_name: ModemManager.service
+  roles:
+    - role: dir-to-lv-migration

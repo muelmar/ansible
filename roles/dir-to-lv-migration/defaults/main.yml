@@ -1,0 +1,9 @@
+---
+# defaults file for dir-to-lv-migration
+lv_migration_path: ""
+lv_migration_lv_device: ""
+lv_migration_fstype: xfs
+lv_migration_service_name: ""
+lv_migration_mount_opts: defaults
+lv_migration_keep_backup: false
+lv_migration_backup_path: ""

@@ -1,5 +1,8 @@
 all:
   hosts:
+    rhel:
+      ansible_user: muelmar
+      ansible_ssh_common_args: "-o StrictHostKeyChecking=no -o ControlMaster=no -o ControlPath=none"
     turtle:
       #ansible_host: "192.168.64.20"
       ansible_user: muelmar
