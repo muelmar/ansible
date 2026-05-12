@@ -23,7 +23,7 @@
 
 - name: Resolve backup path
   ansible.builtin.set_fact:
-    lv_migration_effective_backup_path: "{{ lv_migration_backup_path | default('', true) | length > 0 | ternary(lv_migration_backup_path, lv_migration_path ~ '.pre-lv') }}"
+    lv_migration_effective_backup_path: "{{ (( lv_migration_backup_path | default('', true) | length) > 0 ) | ternary(lv_migration_backup_path, lv_migration_path ~ '.pre-lv') }}"
 
 - name: Read current mount source for migration path
   ansible.builtin.command:
