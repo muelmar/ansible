@@ -1,0 +1,8 @@
+- name: Enforce at least one tag
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Fail if no tags were provided
+      fail:
+        msg: "You must run this playbook with at least one --tags option."
+      when: ansible_run_tags is not defined or ansible_run_tags | length == 0
