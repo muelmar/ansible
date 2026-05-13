@@ -85,7 +85,9 @@
   when:
     - lv_migration_path_is_mountpoint
     - not lv_migration_already_on_target
-
+      #########
+      #add create lv and fs
+      #####
 - name: Migrate directory to LV mountpoint
   when: not lv_migration_already_on_target
   block:
