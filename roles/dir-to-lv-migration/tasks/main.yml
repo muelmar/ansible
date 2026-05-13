@@ -25,14 +25,14 @@
   ansible.builtin.set_fact:
     lv_migration_effective_backup_path: "{{ (( lv_migration_backup_path | default('', true) | length) > 0 ) | ternary(lv_migration_backup_path, lv_migration_path ~ '.pre-lv') }}"
 
-- name: Read current mount source for migration path
+- name: Read current mount source whrn path is an exact mountpoint
   ansible.builtin.command:
     argv:
       - findmnt
       - -n
       - -o
       - SOURCE
-      - --target
+      - --mountpoint
       - "{{ lv_migration_path }}"
   register: lv_migration_findmnt
   changed_when: false
@@ -57,13 +57,15 @@
   register: lv_migration_current_realpath
   changed_when: false
   failed_when: false
-  when: (lv_migration_findmnt.stdout | trim) | length > 0
+  when: lv_migration_findmnt.rc == 0 and (lv_migration_findmnt.stdout | trim) | length > 0
 
 - name: Evaluate migration state
   ansible.builtin.set_fact:
+    lv_migration_path_is_mountpoint: "{{lv_migration_findmnt.rc == 0 and (lv_migration_findmnt.stdout | trim) | length > 0 }}"
     lv_migration_current_source: "{{ lv_migration_findmnt.stdout | trim }}"
     lv_migration_already_on_target: >-
       {{
+        (lv_migration_findmnt.rc == 0) and
         (lv_migration_findmnt.stdout | trim) | length > 0 and
         (
           (lv_migration_findmnt.stdout | trim) == lv_migration_lv_device or
@@ -78,10 +80,10 @@
 - name: Refuse migration when another filesystem is already mounted at path
   ansible.builtin.fail:
     msg: >-
-      {{ lv_migration_path }} is already mounted from {{ lv_migration_current_source }}.
-      Expected LV source {{ lv_migration_lv_device }}.
+      {{ lv_migration_path }} is an existing mountpoint from {{ lv_migration_current_source }}.
+      Required device for this role is {{ lv_migration_lv_device }}.
   when:
-    - (lv_migration_current_source | length) > 0
+    - lv_migration_path_is_mountpoint
     - not lv_migration_already_on_target
 
 - name: Migrate directory to LV mountpoint
