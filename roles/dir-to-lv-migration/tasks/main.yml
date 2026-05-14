@@ -1,9 +1,13 @@
 ---
 # tasks file for dir-to-lv-migration
+- name: Remove trailing slash if any in the path 
+  ansible.builtin.set_fact:
+    lv_migration_path: "{{ lv_migration_path  | regex_replace('\\/*$', '') }}"
+
 - name: Validate mandatory variables
   ansible.builtin.assert:
     that:
-      - lv_migration_path | length > 0
+      - lv_migration_path  | length > 0
       - lv_migration_lv_device | length > 0
       - lv_migration_fstype | length > 0
     fail_msg: "Set lv_migration_path, lv_migration_lv_device and lv_migration_fstype"
@@ -22,7 +26,7 @@
 
 - name: Resolve backup path
   ansible.builtin.set_fact:
-    lv_migration_effective_backup_path: "{{ (( lv_migration_backup_path | default('', true) | length) > 0 ) | ternary(lv_migration_backup_path, lv_migration_path ~ '.pre-lv') }}"
+    lv_migration_effective_backup_path: "{{ (( lv_migration_backup_path | default('', true) | length) > 0 ) | ternary(lv_migration_backup_path, lv_migration_path  ~ '.pre-lv') }}"
 
 - name: Read current mount source whrn path is an exact mountpoint
   ansible.builtin.command:
