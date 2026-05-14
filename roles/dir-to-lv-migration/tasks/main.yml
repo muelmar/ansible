@@ -6,8 +6,7 @@
       - lv_migration_path | length > 0
       - lv_migration_lv_device | length > 0
       - lv_migration_fstype | length > 0
-      - lv_migration_service_name | length > 0
-    fail_msg: "Set lv_migration_path, lv_migration_lv_device, lv_migration_fstype and lv_migration_service_name."
+    fail_msg: "Set lv_migration_path, lv_migration_lv_device and lv_migration_fstype"
 
 - name: Check migration path
   ansible.builtin.stat:
@@ -96,6 +95,7 @@
       ansible.builtin.service:
         name: "{{ lv_migration_service_name }}"
         state: stopped
+      when: lv_migration_service_name | length > 0
 
     - name: Ensure backup path does not already exist
       ansible.builtin.stat:
@@ -155,3 +155,4 @@
       ansible.builtin.service:
         name: "{{ lv_migration_service_name }}"
         state: started
+      when: lv_migration_service_name | length > 0
