@@ -5,9 +5,10 @@
   become: true
   vars:
      lv_migration_path: /media/the_test_dir/
-     lv_migration_lv_device: /dev/mapper/almalinux_vbox-newfs
      lv_migration_fstype: xfs
-# lv_migration_service_name: ModemManager.service
+     lv_migration_vgname: almalinux_vbox
+     lv_migration_lvname: newfs
+     lv_migration_service_name: ModemManager.service
      lv_migration_keep_backup: true
        #lv_migration_backup_path: /opt/mmtemp
   roles:

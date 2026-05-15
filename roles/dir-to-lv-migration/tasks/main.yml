@@ -3,14 +3,16 @@
 - name: Remove trailing slash if any in the path 
   ansible.builtin.set_fact:
     lv_migration_path: "{{ lv_migration_path  | regex_replace('\\/*$', '') }}"
+    lv_migration_lv_device: "/dev/mapper/{{ lv_migration_vgname ~ '-' ~ lv_migration_lvname }}"
+
 
 - name: Validate mandatory variables
   ansible.builtin.assert:
     that:
       - lv_migration_path  | length > 0
-      - lv_migration_lv_device | length > 0
+      - lv_migration_lvname | length > 0
       - lv_migration_fstype | length > 0
-    fail_msg: "Set lv_migration_path, lv_migration_lv_device and lv_migration_fstype"
+    fail_msg: "Set lv_migration_path,  lv_migration_lvname and lv_migration_fstype"
 
 - name: Check migration path
   ansible.builtin.stat:
@@ -104,9 +106,18 @@
           Clean it up or set lv_migration_backup_path.
       when: lv_migration_backup_stat.stat.exists
 
-      #########
-      #add create lv and fs
-      #####
+    - name: create logical volume
+      community.general.lvol:
+        vg: "{{ lv_migration_vgname }}"
+        lv: "{{ lv_migration_lvname }}"
+        size: "{{ lv_migration_lvsize }}"
+        resizefs: True
+        state: present
+    - name: "make filesystem"
+      community.general.filesystem:
+        fstype: "{{ lv_migration_fstype }}"
+        dev: "/dev/{{ lv_migration_vgname }}/{{ lv_migration_lvname }}"
+      ###########end####
     - name: Stop service before migration
       become: true
       ansible.builtin.service:
