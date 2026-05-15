@@ -88,19 +88,10 @@
   when:
     - lv_migration_path_is_mountpoint
     - not lv_migration_already_on_target
-      #########
-      #add create lv and fs
-      #####
+
 - name: Migrate directory to LV mountpoint
   when: not lv_migration_already_on_target
   block:
-    - name: Stop service before migration
-      become: true
-      ansible.builtin.service:
-        name: "{{ lv_migration_service_name }}"
-        state: stopped
-      when: lv_migration_service_name | length > 0
-
     - name: Ensure backup path does not already exist
       ansible.builtin.stat:
         path: "{{ lv_migration_effective_backup_path }}"
@@ -112,6 +103,16 @@
           Backup path already exists: {{ lv_migration_effective_backup_path }}.
           Clean it up or set lv_migration_backup_path.
       when: lv_migration_backup_stat.stat.exists
+
+      #########
+      #add create lv and fs
+      #####
+    - name: Stop service before migration
+      become: true
+      ansible.builtin.service:
+        name: "{{ lv_migration_service_name }}"
+        state: stopped
+      when: lv_migration_service_name | length > 0
 
     - name: Move original directory to backup location
       become: true
