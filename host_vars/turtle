@@ -20,6 +20,11 @@ packages:
   - dia
   - jdupes
   - libvips-tools
+  - eza
+  - fzf
+  - zsh
+  - mosh
+  - nmon
 unwanted:
   - nvme-cli
   - xrdp
