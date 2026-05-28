@@ -19,7 +19,14 @@ packages:
   - jdupes
   - wine
   - ssh
+  - dia
+  - jdupes
+  - libvips-tools
+  - eza
+  - fzf
+  - zsh
+  - mosh
+  - nmon
+  - tmux
 unwanted:
   - minidlna
-  - libreoffice-core-nogui
-  - libreoffice-core
