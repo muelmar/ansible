@@ -10,5 +10,6 @@ packages:
   - nemo
   - libvips-tools
   - cheese
+  - tmux
 unwanted:
   - xrdp
